@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
-
-using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 namespace Work.Code
 {
@@ -47,6 +46,28 @@ namespace Work.Code
             }
 
             ApplyCurrentPreset();
+        }
+
+        private void Update()
+        {
+            Keyboard keyboard = Keyboard.current;
+            if (keyboard == null)
+            {
+                return;
+            }
+            
+            if (keyboard.aKey.wasPressedThisFrame)
+            {
+                ApplyPreset(normalLights);
+            }
+            if (keyboard.sKey.wasPressedThisFrame)
+            {
+                ApplyPreset(liveLights);
+            }
+            if (keyboard.dKey.wasPressedThisFrame)
+            {
+                ApplyPreset(emergencyLights);
+            }
         }
 
         [ContextMenu("Apply Current Preset")]
