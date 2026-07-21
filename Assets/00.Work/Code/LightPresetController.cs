@@ -56,15 +56,15 @@ namespace Work.Code
                 return;
             }
             
-            if (keyboard.aKey.wasPressedThisFrame)
+            if (keyboard.qKey.wasPressedThisFrame)
             {
                 ApplyPreset(normalLights);
             }
-            if (keyboard.sKey.wasPressedThisFrame)
+            if (keyboard.wKey.wasPressedThisFrame)
             {
                 ApplyPreset(liveLights);
             }
-            if (keyboard.dKey.wasPressedThisFrame)
+            if (keyboard.eKey.wasPressedThisFrame)
             {
                 ApplyPreset(emergencyLights);
             }
