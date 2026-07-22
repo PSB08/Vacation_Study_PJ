@@ -11,40 +11,24 @@ namespace Work.Code
         [SerializeField] private int inactivePriority = 0;
         [SerializeField] private int defaultIndex = 0;
         
+        public int CurrentIndex { get; private set; } = -1;
+        
         private void Start()
         {
             SwitchTo(defaultIndex);
         }
         
-        private void Update()
+        public void SwitchTo(int index)
         {
-            Keyboard keyboard = Keyboard.current;
-            if (keyboard == null)
-            {
-                return;
-            }
-            
-            if (keyboard.digit1Key.wasPressedThisFrame || keyboard.numpad1Key.wasPressedThisFrame)
-            {
-                SwitchTo(0);
-            }
-            
-            if (keyboard.digit2Key.wasPressedThisFrame || keyboard.numpad2Key.wasPressedThisFrame)
-            {
-                SwitchTo(1);
-            }
-            
-            if (keyboard.digit3Key.wasPressedThisFrame || keyboard.numpad3Key.wasPressedThisFrame)
-            {
-                SwitchTo(2);
-            }
+            TrySwitchTo(index);
         }
         
-        public void SwitchTo(int index)
+        public bool TrySwitchTo(int index)
         {
             if (cameras == null || index < 0 || index >= cameras.Length)
             {
-                return;
+                Debug.LogWarning($"[CameraPresetSwitcher] Invalid camera index: {index}");
+                return false;
             }
             
             for (int i = 0; i < cameras.Length; i++)
@@ -53,9 +37,12 @@ namespace Work.Code
                 {
                     continue;
                 }
-
+                
                 cameras[i].Priority = i == index ? activePriority : inactivePriority;
             }
+            
+            CurrentIndex = index;
+            return true;
         }
         
     }
