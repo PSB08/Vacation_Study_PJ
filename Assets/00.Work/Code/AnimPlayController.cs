@@ -36,7 +36,6 @@ namespace Work.Code
             }
 
             _animator.CrossFadeInFixedTime(stateName, 0.15f);
-            Debug.Log($"[Animation] Play: {stateName}");
         }
         
     }

@@ -14,6 +14,9 @@ namespace Work.Code
         [Header("Timeline")]
         [SerializeField] private ShowTimelineController timelineController;
         
+        [Header("VFX")]
+        [SerializeField] private StageVfxController vfxController;
+        
         [Header("Status UI")]
         [SerializeField] private TextMeshProUGUI statusText;
         [SerializeField] private TextMeshProUGUI currentPresetText;
@@ -78,26 +81,61 @@ namespace Work.Code
             _currentStatus = "Emergency";
             UpdateStatusText();
         }
-
+        
         public void Apply_TimelineStart()
         {
             if (timelineController != null)
+            {
                 timelineController.PlayFromStart();
-            _currentStatus = "Timeline";
+            }
+            
+            if (vfxController != null)
+            {
+                vfxController.PlayEntrance();
+            }
+            
+            _currentStatus = "Live";
             UpdateStatusText();
         }
-
+        
         public void Apply_TimelineStop()
         {
             if (timelineController != null)
             {
                 timelineController.StopTimeline();
             }
-
+            
+            if (vfxController != null)
+            {
+                vfxController.StopAll();
+            }
+            
             Apply_CameraWide();
             Apply_Normal();
-
+            
             _currentStatus = "Ready";
+            UpdateStatusText();
+        }
+        
+        public void Apply_VfxEntrance()
+        {
+            if (vfxController != null)
+            {
+                vfxController.PlayEntrance();
+            }
+            
+            _currentStatus = "VFX";
+            UpdateStatusText();
+        }
+        
+        public void Apply_VfxAccent()
+        {
+            if (vfxController != null)
+            {
+                vfxController.PlayAccent();
+            }
+            
+            _currentStatus = "VFX";
             UpdateStatusText();
         }
         
