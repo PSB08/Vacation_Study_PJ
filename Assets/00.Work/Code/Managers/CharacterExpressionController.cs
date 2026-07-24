@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UniVRM10;
 
-namespace Work.Code
+namespace Work.Code.Managers
 {
-    public class CharacterLiveController : MonoBehaviour
+    public class CharacterExpressionController : MonoBehaviour
     {
         [SerializeField] private Vrm10Instance vrm;
         [SerializeField] private Animator animator;

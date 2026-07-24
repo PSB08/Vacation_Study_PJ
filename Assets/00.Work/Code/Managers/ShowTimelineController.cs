@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Playables;
 
-namespace Work.Code
+namespace Work.Code.Managers
 {
     public class ShowTimelineController : MonoBehaviour
     {
@@ -9,6 +9,11 @@ namespace Work.Code
         
         public void PlayFromStart()
         {
+            if (director == null)
+            {
+                return;
+            }
+            
             director.time = 0;
             director.Play();
         }

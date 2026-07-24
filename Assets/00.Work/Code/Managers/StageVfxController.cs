@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Work.Code
+namespace Work.Code.Managers
 {
     public class StageVfxController : MonoBehaviour
     {

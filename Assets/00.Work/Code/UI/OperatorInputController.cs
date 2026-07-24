@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
+using Work.Code.Routers;
 
-namespace Work.Code
+namespace Work.Code.UI
 {
     public class OperatorInputController : MonoBehaviour
     {
         [Header("Input")]
         [SerializeField] private PlayerInputSO inputSO;
         
-        [Header("Controllers")]
-        [SerializeField] private OperatorPanelController operatorPanelController;
-        [SerializeField] private StageVfxController stageVfxController;
+        [Header("Router")]
+        [SerializeField] private ShowCueRouter showCueRouter;
         
         private bool _isShowPlaying;
         
@@ -56,108 +56,62 @@ namespace Work.Code
         
         private void HandleCameraWide()
         {
-            if (operatorPanelController == null)
-            {
-                return;
-            }
-            
-            operatorPanelController.Apply_CameraWide();
+            showCueRouter?.CueCameraWide();
         }
         
         private void HandleCameraCloseUp()
         {
-            if (operatorPanelController == null)
-            {
-                return;
-            }
-            
-            operatorPanelController.Apply_CameraCloseUp();
+            showCueRouter?.CueCameraCloseUp();
         }
         
         private void HandleCameraSide()
         {
-            if (operatorPanelController == null)
-            {
-                return;
-            }
-            
-            operatorPanelController.Apply_CameraSide();
+            showCueRouter?.CueCameraSide();
         }
         
         private void HandleLightNormal()
         {
-            if (operatorPanelController == null)
-            {
-                return;
-            }
-            
-            operatorPanelController.Apply_Normal();
+            showCueRouter?.CueLightNormal();
         }
         
         private void HandleLightLive()
         {
-            if (operatorPanelController == null)
-            {
-                return;
-            }
-            
-            operatorPanelController.Apply_Live();
+            showCueRouter?.CueLightLive();
         }
         
         private void HandleLightEmergency()
         {
-            if (operatorPanelController == null)
-            {
-                return;
-            }
-            
-            operatorPanelController.Apply_Emergency();
+            showCueRouter?.CueLightEmergency();
         }
         
         private void HandleShowToggle()
         {
-            if (operatorPanelController == null)
+            if (showCueRouter == null)
             {
                 return;
             }
             
             if (_isShowPlaying)
             {
-                operatorPanelController.Apply_TimelineStop();
+                showCueRouter.CueTimelineStop();
                 _isShowPlaying = false;
             }
             else
             {
-                operatorPanelController.Apply_TimelineStart();
+                showCueRouter.CueTimelineStart();
                 _isShowPlaying = true;
             }
         }
         
         private void HandleFallback()
         {
-            if (operatorPanelController != null)
-            {
-                operatorPanelController.Apply_TimelineStop();
-                operatorPanelController.Apply_CameraWide();
-                operatorPanelController.Apply_Normal();
-            }
-            
-            if (stageVfxController != null)
-            {
-                stageVfxController.StopAll();
-            }
-            
+            showCueRouter?.CueTimelineStop();
             _isShowPlaying = false;
         }
         
         private void HandleVfxAccent()
         {
-            if (stageVfxController == null)
-            {
-                return;
-            }
-            
-            stageVfxController.PlayAccent();
+            showCueRouter?.CueVfxAccent();
         }
         
     }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Work.Code
+namespace Work.Code.Managers
 {
     public class AnimPlayController : MonoBehaviour
     {

@@ -1,8 +1,7 @@
 ﻿using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-namespace Work.Code
+namespace Work.Code.Managers
 {
     public class CameraPresetSwitcher : MonoBehaviour
     {
