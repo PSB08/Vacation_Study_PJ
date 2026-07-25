@@ -4157,7 +4157,7 @@ GameObject:
   - component: {fileID: 587594205}
   - component: {fileID: 587594204}
   m_Layer: 5
-  m_Name: Pose3Btn
+  m_Name: Dance1Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4227,9 +4227,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 476152498}
-        m_TargetAssemblyTypeName: Work.Code.AnimPlayController, Assembly-CSharp
-        m_MethodName: Anim_Dance
+      - m_Target: {fileID: 907495723}
+        m_TargetAssemblyTypeName: Work.Code.Routers.ShowCueRouter, Assembly-CSharp
+        m_MethodName: CueAnimDance
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6018,7 +6018,7 @@ GameObject:
   - component: {fileID: 843025665}
   - component: {fileID: 843025664}
   m_Layer: 5
-  m_Name: Dance3Btn
+  m_Name: SurprisedExpressBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6490,7 +6490,7 @@ GameObject:
   - component: {fileID: 875840197}
   - component: {fileID: 875840196}
   m_Layer: 5
-  m_Name: Dance1Btn
+  m_Name: DefaultExpressBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6832,6 +6832,7 @@ GameObject:
   m_Component:
   - component: {fileID: 907495724}
   - component: {fileID: 907495723}
+  - component: {fileID: 907495725}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -6853,8 +6854,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Work.Code.Managers.ShowCueRouter
   cameraManager: {fileID: 1239697940}
   lightManager: {fileID: 434653857}
+  animManager: {fileID: 476152498}
   expressionManager: {fileID: 476152499}
-  vfxManager: {fileID: 0}
+  vfxManager: {fileID: 1389241232}
   timelineManager: {fileID: 1711741976}
 --- !u!4 &907495724
 Transform:
@@ -6871,6 +6873,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &907495725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 907495722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d485f0b3284190850b97adf8103d2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Work.Code.OSC.OscReceiverController
+  port: 9000
+  activeSignalSeconds: 3
+  showCueRouter: {fileID: 907495723}
 --- !u!1 &919047980
 GameObject:
   m_ObjectHideFlags: 0
@@ -7869,7 +7886,7 @@ GameObject:
   - component: {fileID: 1176620262}
   - component: {fileID: 1176620261}
   m_Layer: 5
-  m_Name: Dance2Btn
+  m_Name: HappyExpressBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8184,9 +8201,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 476152498}
-        m_TargetAssemblyTypeName: Work.Code.AnimPlayController, Assembly-CSharp
-        m_MethodName: Anim_Idle
+      - m_Target: {fileID: 907495723}
+        m_TargetAssemblyTypeName: Work.Code.Routers.ShowCueRouter, Assembly-CSharp
+        m_MethodName: CueAnimIdle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9809,7 +9826,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -41}
+  m_AnchoredPosition: {x: 0, y: -55}
   m_SizeDelta: {x: 0, y: 82}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1409835911
@@ -10565,6 +10582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Work.Code.OperatorPanelController
   showCueRouter: {fileID: 907495723}
+  oscReceiverController: {fileID: 907495725}
   statusText: {fileID: 1409835911}
   currentPresetText: {fileID: 1749396584}
   lastCommandText: {fileID: 1655375650}
@@ -11196,7 +11214,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 225, y: -100}
-  m_SizeDelta: {x: 400, y: 164}
+  m_SizeDelta: {x: 400, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1732291750
 MonoBehaviour:
@@ -11290,7 +11308,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 55}
+  m_AnchoredPosition: {x: 0, y: 42}
   m_SizeDelta: {x: 0, y: 82}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1749396584
@@ -12302,9 +12320,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 476152498}
-        m_TargetAssemblyTypeName: Work.Code.AnimPlayController, Assembly-CSharp
-        m_MethodName: Anim_Walk
+      - m_Target: {fileID: 907495723}
+        m_TargetAssemblyTypeName: Work.Code.Routers.ShowCueRouter, Assembly-CSharp
+        m_MethodName: CueAnimWalk
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

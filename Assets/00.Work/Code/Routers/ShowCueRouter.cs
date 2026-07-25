@@ -10,6 +10,7 @@ namespace Work.Code.Routers
         [Header("Managers")]
         [SerializeField] private CameraPresetSwitcher cameraManager;
         [SerializeField] private LightPresetController lightManager;
+        [SerializeField] private AnimPlayController animManager;
         [SerializeField] private CharacterExpressionController expressionManager;
         [SerializeField] private StageVfxController vfxManager;
         [SerializeField] private ShowTimelineController timelineManager;
@@ -115,6 +116,43 @@ namespace Work.Code.Routers
         #endregion
         
         #region Express
+
+        public void CueAnimIdle()
+        {
+            if (!CheckManager(animManager, "AnimPlayController"))
+            {
+                return;
+            }
+            
+            animManager.Anim_Idle();
+            SetStatus("Idle");
+            LogCommand("Anim", "Idle");
+        }
+        
+        public void CueAnimWalk()
+        {
+            if (!CheckManager(animManager, "AnimPlayController"))
+            {
+                return;
+            }
+            
+            animManager.Anim_Walk();
+            SetStatus("Walk");
+            LogCommand("Anim", "Walk");
+        }
+        
+        public void CueAnimDance(int index)
+        {
+            if (!CheckManager(animManager, "AnimPlayController"))
+            {
+                return;
+            }
+            
+            animManager.Anim_Dance(index);
+            SetStatus($"Dance{index}");
+            LogCommand("Anim", $"Dance{index}");
+        }
+        
         public void CueExpressNeutral()
         {
             if (!CheckManager(expressionManager, "CharacterExpressionController"))

@@ -1,0 +1,32 @@
+﻿# OSC Command Spec
+
+Protocol: OSC 1.0
+Transport: UDP
+Unity Receive Port: 9000
+External Controller -> Unity
+Unity Role: OSC Server
+External Tool Role: OSC Client
+
+
+명령어
+
+OSC 주소    	            인자	      연결할 함수	                역할
+-------------------------------------------------------------------------------
+/show/start	            없음	      CueTimelineStart()	    공연 Timeline 시작
+/show/stop	            없음	      CueTimelineStop()	        공연 정지
+/camera/wide	        없음	      CueCameraWide()	        Wide 카메라
+/camera/closeup	        없음	      CueCameraCloseUp()	    CloseUp 카메라
+/camera/side	        없음	      CueCameraSide()	        Side 카메라
+/anim/idle              없음       CueAnimIdle()             Idle 애니메이션
+/anim/walk              없음       CueAnimWalk()             Walk 애니메이션
+/expression/neutral	    없음	      CueExpressionNeutral()	기본 표정
+/expression/smile	    없음	      CueExpressionHappy()	    웃음 표정
+/expression/surprise	없음	      CueExpressionSurprised()	놀람 표정
+/light/normal	        없음	      CueLightNormal()	        기본 조명
+/light/live	            없음	      CueLightLive()	        라이브 조명
+/light/emergency 	    없음	      CueLightEmergency()	    비상 조명
+/vfx/entrance	        없음	      CueVfxEntrance()	        등장 이펙트
+/vfx/accent	            없음	      CueVfxAccent()	        강조 이펙트
+/fallback	            없음	      CueFallback()	            안전 상태 복구
+--------------------------------------------------------------------------------
+

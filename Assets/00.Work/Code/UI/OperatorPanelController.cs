@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Work.Code.OSC;
 using Work.Code.Routers;
 
 namespace Work.Code.UI
@@ -11,6 +12,9 @@ namespace Work.Code.UI
     {
         [Header("Router")]
         [SerializeField] private ShowCueRouter showCueRouter;
+
+        [Header("OSC")]
+        [SerializeField] private OscReceiverController oscReceiverController;
         
         [Header("Status UI")]
         [SerializeField] private TextMeshProUGUI statusText;
@@ -22,42 +26,72 @@ namespace Work.Code.UI
         
         private readonly Queue<string> _logs = new Queue<string>();
         private const int MaxLogCount = 10;
+        private string _showStatus = "Ready";
+        private string _oscReceiveStatus = "Stopped";
+        private string _oscSignalStatus = "Idle";
 
         private void Awake()
         {
-            statusText.text = string.Empty;
-            currentPresetText.text = string.Empty;
-            lastCommandText.text = string.Empty;
-            logText.text = string.Empty;
-            warningText.text = string.Empty;
+            RefreshStatusText();
+            
+            if (currentPresetText != null)
+            {
+                currentPresetText.text = string.Empty;
+            }
+
+            if (lastCommandText != null)
+            {
+                lastCommandText.text = string.Empty;
+            }
+
+            if (logText != null)
+            {
+                logText.text = string.Empty;
+            }
+
+            if (warningText != null)
+            {
+                warningText.text = string.Empty;
+            }
         }
 
         private void OnEnable()
         {
-            if (showCueRouter == null)
+            if (showCueRouter != null)
             {
-                return;
+                showCueRouter.OnStatusChanged += UpdateStatusText;
+                showCueRouter.OnPresetChanged += UpdatePresetText;
+                showCueRouter.OnLastCommandChanged += UpdateLastCommandText;
+                showCueRouter.OnLogAdded += AddLogText;
+                showCueRouter.OnWarningLog += UpdateWarningText;
             }
-            
-            showCueRouter.OnStatusChanged += UpdateStatusText;
-            showCueRouter.OnPresetChanged += UpdatePresetText;
-            showCueRouter.OnLastCommandChanged += UpdateLastCommandText;
-            showCueRouter.OnLogAdded += AddLogText;
-            showCueRouter.OnWarningLog += UpdateWarningText;
+
+            if (oscReceiverController != null)
+            {
+                oscReceiverController.OnReceiveStatusChanged += UpdateOscReceiveStatusText;
+                oscReceiverController.OnSignalStatusChanged += UpdateOscSignalStatusText;
+
+                UpdateOscReceiveStatusText(oscReceiverController.ReceiveStatus);
+                UpdateOscSignalStatusText(oscReceiverController.SignalStatus);
+            }
         }
 
         private void OnDisable()
         {
-            if (showCueRouter == null)
+            if (showCueRouter != null)
             {
-                return;
+                showCueRouter.OnStatusChanged -= UpdateStatusText;
+                showCueRouter.OnPresetChanged -= UpdatePresetText;
+                showCueRouter.OnLastCommandChanged -= UpdateLastCommandText;
+                showCueRouter.OnLogAdded -= AddLogText;
+                showCueRouter.OnWarningLog -= UpdateWarningText;
             }
-            
-            showCueRouter.OnStatusChanged -= UpdateStatusText;
-            showCueRouter.OnPresetChanged -= UpdatePresetText;
-            showCueRouter.OnLastCommandChanged -= UpdateLastCommandText;
-            showCueRouter.OnLogAdded -= AddLogText;
-            showCueRouter.OnWarningLog -= UpdateWarningText;
+
+            if (oscReceiverController != null)
+            {
+                oscReceiverController.OnReceiveStatusChanged -= UpdateOscReceiveStatusText;
+                oscReceiverController.OnSignalStatusChanged -= UpdateOscSignalStatusText;
+            }
         }
         
         #region Camera
@@ -144,10 +178,30 @@ namespace Work.Code.UI
         
         private void UpdateStatusText(string status)
         {
-            if (statusText != null)
+            _showStatus = status;
+            RefreshStatusText();
+        }
+
+        private void UpdateOscReceiveStatusText(string status)
+        {
+            _oscReceiveStatus = status;
+            RefreshStatusText();
+        }
+
+        private void UpdateOscSignalStatusText(string status)
+        {
+            _oscSignalStatus = status;
+            RefreshStatusText();
+        }
+
+        private void RefreshStatusText()
+        {
+            if (statusText == null)
             {
-                statusText.text = $"Status : {status}";
+                return;
             }
+
+            statusText.text = $"Status : {_showStatus}\nOSC : {_oscReceiveStatus}\nSignal : {_oscSignalStatus}";
         }
         
         private void UpdatePresetText(string preset)
