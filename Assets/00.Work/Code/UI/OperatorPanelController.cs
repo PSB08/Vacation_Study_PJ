@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Work.Code.OBS;
 using Work.Code.OSC;
 using Work.Code.Routers;
 
@@ -23,6 +24,11 @@ namespace Work.Code.UI
         [SerializeField] private TextMeshProUGUI lastCommandText;
         [SerializeField] private TextMeshProUGUI logText;
         [SerializeField] private TextMeshProUGUI warningText;
+        
+        [Header("OBS")]
+        [SerializeField] private ObsWebSocketClient obsWebSocketClient;
+        [SerializeField] private TextMeshProUGUI obsStatusText;
+        [SerializeField] private TextMeshProUGUI obsLastMessageText;
         
         private readonly Queue<string> _logs = new Queue<string>();
         private const int MaxLogCount = 10;
@@ -74,6 +80,15 @@ namespace Work.Code.UI
                 UpdateOscReceiveStatusText(oscReceiverController.ReceiveStatus);
                 UpdateOscSignalStatusText(oscReceiverController.SignalStatus);
             }
+            
+            if (obsWebSocketClient != null)
+            {
+                obsWebSocketClient.OnStatusChanged += UpdateObsStatusText;
+                obsWebSocketClient.OnLastMessageChanged += UpdateObsLastMessageText;
+                
+                UpdateObsStatusText(obsWebSocketClient.StatusText);
+                UpdateObsLastMessageText(obsWebSocketClient.LastMessage);
+            }
         }
 
         private void OnDisable()
@@ -91,6 +106,12 @@ namespace Work.Code.UI
             {
                 oscReceiverController.OnReceiveStatusChanged -= UpdateOscReceiveStatusText;
                 oscReceiverController.OnSignalStatusChanged -= UpdateOscSignalStatusText;
+            }
+            
+            if (obsWebSocketClient != null)
+            {
+                obsWebSocketClient.OnStatusChanged -= UpdateObsStatusText;
+                obsWebSocketClient.OnLastMessageChanged -= UpdateObsLastMessageText;
             }
         }
         
@@ -176,6 +197,38 @@ namespace Work.Code.UI
         }
         #endregion
         
+        #region OBS
+        public void Apply_ObsConnect()
+        {
+            showCueRouter?.CueObsConnect();
+        }
+        
+        public void Apply_ObsDisconnect()
+        {
+            showCueRouter?.CueObsDisconnect();
+        }
+        
+        public void Apply_ObsReconnect()
+        {
+            showCueRouter?.CueObsReconnect();
+        }
+        
+        public void Apply_ObsSceneStandby()
+        {
+            showCueRouter?.CueObsSceneStandby();
+        }
+        
+        public void Apply_ObsSceneLive()
+        {
+            showCueRouter?.CueObsSceneLive();
+        }
+        
+        public void Apply_ObsSceneEmergency()
+        {
+            showCueRouter?.CueObsSceneEmergency();
+        }
+        #endregion
+        
         private void UpdateStatusText(string status)
         {
             _showStatus = status;
@@ -250,6 +303,22 @@ namespace Work.Code.UI
             yield return new WaitForSeconds(1f);
             
             warningText.text = string.Empty;
+        }
+        
+        private void UpdateObsStatusText(string status)
+        {
+            if (obsStatusText != null)
+            {
+                obsStatusText.text = $"OBS : {status}";
+            }
+        }
+
+        private void UpdateObsLastMessageText(string message)
+        {
+            if (obsLastMessageText != null)
+            {
+                obsLastMessageText.text = $"OBS Last : {message}";
+            }
         }
         
     }

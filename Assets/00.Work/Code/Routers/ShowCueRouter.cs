@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using Work.Code.Managers;
+using Work.Code.OBS;
 using Object = UnityEngine.Object;
 
 namespace Work.Code.Routers
@@ -14,6 +15,7 @@ namespace Work.Code.Routers
         [SerializeField] private CharacterExpressionController expressionManager;
         [SerializeField] private StageVfxController vfxManager;
         [SerializeField] private ShowTimelineController timelineManager;
+        [SerializeField] private ObsWebSocketClient obsWebSocketClient;
         
         public event Action<string> OnStatusChanged;
         public event Action<string> OnPresetChanged;
@@ -260,6 +262,74 @@ namespace Work.Code.Routers
 
             SetStatus("Ready");
             LogCommand("Timeline", "Stop");
+        }
+        #endregion
+        
+        #region OBS
+        public void CueObsConnect()
+        {
+            if (!CheckManager(obsWebSocketClient, "ObsWebSocketClient"))
+            {
+                return;
+            }
+            
+            obsWebSocketClient.ConnectToObs();
+            LogCommand("OBS", "Connect");
+        }
+        
+        public void CueObsDisconnect()
+        {
+            if (!CheckManager(obsWebSocketClient, "ObsWebSocketClient"))
+            {
+                return;
+            }
+            
+            obsWebSocketClient.DisconnectFromObs();
+            LogCommand("OBS", "Disconnect");
+        }
+        
+        public void CueObsReconnect()
+        {
+            if (!CheckManager(obsWebSocketClient, "ObsWebSocketClient"))
+            {
+                return;
+            }
+            
+            obsWebSocketClient.ReconnectToObs();
+            LogCommand("OBS", "Reconnect");
+        }
+        
+        public void CueObsSceneStandby()
+        {
+            if (!CheckManager(obsWebSocketClient, "ObsWebSocketClient"))
+            {
+                return;
+            }
+            
+            obsWebSocketClient.SwitchSceneStandby();
+            LogCommand("OBS Scene", "Standby");
+        }
+        
+        public void CueObsSceneLive()
+        {
+            if (!CheckManager(obsWebSocketClient, "ObsWebSocketClient"))
+            {
+                return;
+            }
+            
+            obsWebSocketClient.SwitchSceneLive();
+            LogCommand("OBS Scene", "Live");
+        }
+        
+        public void CueObsSceneEmergency()
+        {
+            if (!CheckManager(obsWebSocketClient, "ObsWebSocketClient"))
+            {
+                return;
+            }
+            
+            obsWebSocketClient.SwitchSceneEmergency();
+            LogCommand("OBS Scene", "Emergency");
         }
         #endregion
         

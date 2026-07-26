@@ -156,6 +156,25 @@ namespace Work.Code.OSC
                     showCueRouter.CueFallback();
                     break;
                 
+                case "/obs/connect":
+                    showCueRouter.CueObsConnect();
+                    break;
+                case "/obs/disconnect":
+                    showCueRouter.CueObsDisconnect();
+                    break;
+                case "/obs/reconnect":
+                    showCueRouter.CueObsReconnect();
+                    break;
+                case "/obs/scenestandby":
+                    showCueRouter.CueObsSceneStandby();
+                    break;
+                case "/obs/scenelive":
+                    showCueRouter.CueObsSceneLive();
+                    break;
+                case "/obs/sceneemergency":
+                    showCueRouter.CueObsSceneEmergency();
+                    break;
+                
                 default:
                     Debug.LogWarning($"[OSC] Unknown address: {address}");
                     break;
