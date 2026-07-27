@@ -165,13 +165,13 @@ namespace Work.Code.OSC
                 case "/obs/reconnect":
                     showCueRouter.CueObsReconnect();
                     break;
-                case "/obs/scenestandby":
+                case "/obs/standby":
                     showCueRouter.CueObsSceneStandby();
                     break;
-                case "/obs/scenelive":
+                case "/obs/live":
                     showCueRouter.CueObsSceneLive();
                     break;
-                case "/obs/sceneemergency":
+                case "/obs/emergency":
                     showCueRouter.CueObsSceneEmergency();
                     break;
                 

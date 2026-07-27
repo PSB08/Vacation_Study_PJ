@@ -153,17 +153,17 @@ namespace Work.Code.UI
 
         public void Apply_ExpressNeutral()
         {
-            showCueRouter?.CueExpressNeutral();
+            showCueRouter?.CueExpressionNeutral();
         }
 
         public void Apply_ExpressHappy()
         {
-            showCueRouter?.CueExpressHappy();
+            showCueRouter?.CueExpressionHappy();
         }
 
         public void Apply_ExpressSurprised()
         {
-            showCueRouter?.CueExpressSurprised();
+            showCueRouter?.CueExpressionSurprised();
         }
 
         public void Apply_Fallback()

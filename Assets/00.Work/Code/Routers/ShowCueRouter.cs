@@ -155,7 +155,7 @@ namespace Work.Code.Routers
             LogCommand("Anim", $"Dance{index}");
         }
         
-        public void CueExpressNeutral()
+        public void CueExpressionNeutral()
         {
             if (!CheckManager(expressionManager, "CharacterExpressionController"))
             {
@@ -167,7 +167,7 @@ namespace Work.Code.Routers
             LogCommand("Express", "Neutral");
         }
 
-        public void CueExpressHappy()
+        public void CueExpressionHappy()
         {
             if (!CheckManager(expressionManager, "CharacterExpressionController"))
             {
@@ -179,7 +179,7 @@ namespace Work.Code.Routers
             LogCommand("Express", "Happy");
         }
 
-        public void CueExpressSurprised()
+        public void CueExpressionSurprised()
         {
             if (!CheckManager(expressionManager, "CharacterExpressionController"))
             {

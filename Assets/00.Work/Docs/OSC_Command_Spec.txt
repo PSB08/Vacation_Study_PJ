@@ -28,5 +28,20 @@ OSC 주소    	            인자	      연결할 함수	                역할
 /vfx/entrance	        없음	      CueVfxEntrance()	        등장 이펙트
 /vfx/accent	            없음	      CueVfxAccent()	        강조 이펙트
 /fallback	            없음	      CueFallback()	            안전 상태 복구
+/obs/connect            없음       CueObsConnect()           Obs 연결
+/obs/disconnect         없음       CueObsDisconnect()        Obs 연결 해제
+/obs/reconnect          없음       CueObsReconnect()         Obs 재연결
+/obs/standby            없음       CueObsSceneStandby()      Obs 씬 Standby로 변경
+/obs/live               없음       CueObsSceneLive()         Obs 씬 Live로 변경
+/obs/emergency          없음       CueObsSceneEmergency()    Obs 씬 Emergency로 변경
 --------------------------------------------------------------------------------
 
+Flow
+
+OSC Client
+        ↓
+OscReceiverController
+        ↓
+ShowCueRouter
+        ↓
+Camera / Light / Expression / Timeline / VFX / OBS

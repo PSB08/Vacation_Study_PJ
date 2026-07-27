@@ -1,0 +1,26 @@
+﻿# OBS WebSocket Spec
+
+OBS Version : OBS 32.1.1
+WebSocket Version : OBS WebSocket 5.x
+Host : 127.0.0.1
+Port : 9009
+Authentication 사용
+
+
+Scenes
+
+Standby : 방송 대기 화면
+Live : Unity 공연 화면
+Emergency : 비상/오류 화면
+
+Flow
+
+Unity
+  ↓ ws://127.0.0.1:9009
+OBS Hello
+  ↓
+Unity Identify
+  ↓
+OBS Identified
+  ↓
+Request 사용 가능
