@@ -228,6 +228,25 @@ namespace Work.Code.UI
             showCueRouter?.CueObsSceneEmergency();
         }
         #endregion
+
+        #region Quality
+
+        public void Apply_QualityNormal()
+        {
+            showCueRouter.CueQualityNormal();
+        }
+
+        public void Apply_QualityLow()
+        {
+            showCueRouter.CueQualityLow();
+        }
+
+        public void Apply_EmergencyFallback()
+        {
+            showCueRouter.CueEmergencyFallback();
+        }
+
+        #endregion
         
         private void UpdateStatusText(string status)
         {

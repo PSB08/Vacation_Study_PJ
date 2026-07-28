@@ -16,6 +16,7 @@ namespace Work.Code.Routers
         [SerializeField] private StageVfxController vfxManager;
         [SerializeField] private ShowTimelineController timelineManager;
         [SerializeField] private ObsWebSocketClient obsWebSocketClient;
+        [SerializeField] private QualityModeController qualityModeController;
         
         public event Action<string> OnStatusChanged;
         public event Action<string> OnPresetChanged;
@@ -331,6 +332,75 @@ namespace Work.Code.Routers
             obsWebSocketClient.SwitchSceneEmergency();
             LogCommand("OBS Scene", "Emergency");
         }
+        #endregion
+
+        #region Quality
+
+        public void CueQualityNormal()
+        {
+            if (!CheckManager(qualityModeController, "QualityModeController"))
+            {
+                return;
+            }
+            
+            if (CheckManager(lightManager, "LightPresetController"))
+            {
+                lightManager.ApplyNormal();
+            }
+            
+            qualityModeController.ApplyNormalQuality();
+            SetStatus("Ready");
+            LogCommand("Quality", "Normal");
+        }
+        
+        public void CueQualityLow()
+        {
+            if (!CheckManager(qualityModeController, "QualityModeController"))
+            {
+                return;
+            }
+            
+            if (CheckManager(lightManager, "LightPresetController"))
+            {
+                lightManager.ApplyNormal();
+            }
+            
+            qualityModeController.ApplyLowQuality();
+            SetStatus("Low Quality");
+            LogCommand("Quality", "Low");
+        }
+        
+        public void CueEmergencyFallback()
+        {
+            if (CheckManager(qualityModeController, "QualityModeController"))
+            {
+                qualityModeController.ApplyEmergencyQuality();
+            }
+            
+            if (CheckManager(lightManager, "LightPresetController"))
+            {
+                lightManager.ApplyEmergency();
+            }
+            
+            if (CheckManager(vfxManager, "StageVfxController"))
+            {
+                vfxManager.StopAll();
+            }
+            
+            if (CheckManager(expressionManager, "CharacterExpressionController"))
+            {
+                expressionManager.FallbackToIdle();
+            }
+            
+            if (CheckManager(cameraManager, "CameraPresetSwitcher"))
+            {
+                cameraManager.SwitchTo(0);
+            }
+            
+            SetStatus("Emergency");
+            LogCommand("Emergency", "Fallback + Low Quality");
+        }
+        
         #endregion
         
         private void SetStatus(string status)
