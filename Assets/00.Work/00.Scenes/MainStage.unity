@@ -9029,8 +9029,8 @@ MonoBehaviour:
   lightManager: {fileID: 434653857}
   animManager: {fileID: 476152498}
   expressionManager: {fileID: 476152499}
-  vfxManager: {fileID: 1389241232}
-  timelineManager: {fileID: 1711741976}
+  vfxManager: {fileID: 0}
+  timelineManager: {fileID: 0}
   obsWebSocketClient: {fileID: 907495726}
   qualityModeController: {fileID: 907495727}
 --- !u!4 &907495724
@@ -9105,24 +9105,38 @@ MonoBehaviour:
   - {fileID: 1239854621}
   - {fileID: 1722749826}
   disabledInLowQualityLights: []
+  rendererData: {fileID: 11400000, guid: f288ae1f4751b564a96ac7587541f7a2, type: 2}
+  ssaoFeatureName: ScreenSpaceAmbientOcclusion
+  normalSsaoEnabled: 1
+  lowSsaoEnabled: 0
+  emergencySsaoEnabled: 0
   normalRenderScale: 1
   normalShadowDistance: 50
   normalBloomEnabled: 1
   normalBloomIntensity: 2.52
   normalParticlesEnabled: 0
   normalOptionalLightsEnabled: 1
+  normalBloomThreshold: 1.1
+  normalBloomScatter: 0.55
+  normalBloomHighQualityFiltering: 0
   lowRenderScale: 0.8
   lowShadowDistance: 25
   lowBloomEnabled: 1
   lowBloomIntensity: 0.2
   lowParticlesEnabled: 0
   lowOptionalLightsEnabled: 0
+  lowBloomThreshold: 1.4
+  lowBloomScatter: 0.35
+  lowBloomHighQualityFiltering: 0
   emergencyRenderScale: 0.75
   emergencyShadowDistance: 15
   emergencyBloomEnabled: 0
   emergencyBloomIntensity: 0
   emergencyParticlesEnabled: 0
   emergencyOptionalLightsEnabled: 0
+  emergencyBloomThreshold: 1.6
+  emergencyBloomScatter: 0.2
+  emergencyBloomHighQualityFiltering: 0
 --- !u!1 &911530802
 GameObject:
   m_ObjectHideFlags: 0

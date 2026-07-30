@@ -31,6 +31,9 @@ namespace Work.Code.Managers
                 return;
             }
             
+            ParticleSystem.EmissionModule emission = effect.emission;
+            emission.enabled = true;
+
             effect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             effect.Clear(true);
             effect.Play(true);

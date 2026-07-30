@@ -198,7 +198,8 @@ namespace Work.Code.Routers
             {
                 return;
             }
-            
+
+            CueTimelineStop();
             expressionManager.FallbackToIdle();
             SetStatus("Ready");
             LogCommand("All", "Fallback");

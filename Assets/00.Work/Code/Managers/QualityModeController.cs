@@ -16,6 +16,13 @@ namespace Work.Code.Managers
         [SerializeField] private Light[] shadowLights;
         [SerializeField] private Light[] disabledInLowQualityLights;
         
+        [Header("Renderer Features")]
+        [SerializeField] private ScriptableRendererData rendererData;
+        [SerializeField] private string ssaoFeatureName = "ScreenSpaceAmbientOcclusion";
+        [SerializeField] private bool normalSsaoEnabled = true;
+        [SerializeField] private bool lowSsaoEnabled = false;
+        [SerializeField] private bool emergencySsaoEnabled = false;
+        
         [Header("Normal Quality")]
         [SerializeField] private float normalRenderScale = 1.0f;
         [SerializeField] private float normalShadowDistance = 50f;
@@ -23,6 +30,10 @@ namespace Work.Code.Managers
         [SerializeField] private float normalBloomIntensity = 0.8f;
         [SerializeField] private bool normalParticlesEnabled = true;
         [SerializeField] private bool normalOptionalLightsEnabled = true;
+        
+        [SerializeField] private float normalBloomThreshold = 1.1f;
+        [SerializeField] private float normalBloomScatter = 0.55f;
+        [SerializeField] private bool normalBloomHighQualityFiltering = false;
         
         [Header("Low Quality")]
         [SerializeField] private float lowRenderScale = 0.8f;
@@ -32,6 +43,10 @@ namespace Work.Code.Managers
         [SerializeField] private bool lowParticlesEnabled = false;
         [SerializeField] private bool lowOptionalLightsEnabled = false;
         
+        [SerializeField] private float lowBloomThreshold = 1.4f;
+        [SerializeField] private float lowBloomScatter = 0.35f;
+        [SerializeField] private bool lowBloomHighQualityFiltering = false;
+        
         [Header("Emergency Quality")]
         [SerializeField] private float emergencyRenderScale = 0.75f;
         [SerializeField] private float emergencyShadowDistance = 15f;
@@ -39,6 +54,10 @@ namespace Work.Code.Managers
         [SerializeField] private float emergencyBloomIntensity = 0f;
         [SerializeField] private bool emergencyParticlesEnabled = false;
         [SerializeField] private bool emergencyOptionalLightsEnabled = false;
+        
+        [SerializeField] private float emergencyBloomThreshold = 1.6f;
+        [SerializeField] private float emergencyBloomScatter = 0.2f;
+        [SerializeField] private bool emergencyBloomHighQualityFiltering = false;
         
         private UniversalRenderPipelineAsset _urpAsset;
         private Bloom _bloom;
@@ -60,10 +79,13 @@ namespace Work.Code.Managers
             IsLowQuality = false;
             
             ApplyRenderSettings(normalRenderScale, normalShadowDistance);
-            ApplyBloom(normalBloomEnabled, normalBloomIntensity);
+            ApplyBloom(normalBloomEnabled, normalBloomIntensity, 
+                normalBloomThreshold, normalBloomScatter, normalBloomHighQualityFiltering);
+            
             SetParticlesEnabled(normalParticlesEnabled);
             SetShadowLightsEnabled(true);
             SetOptionalLightsEnabled(normalOptionalLightsEnabled);
+            SetRendererFeatureActive(ssaoFeatureName, normalSsaoEnabled);
             
             Debug.Log("[QualityMode] Normal Quality Applied");
         }
@@ -73,10 +95,13 @@ namespace Work.Code.Managers
             IsLowQuality = true;
             
             ApplyRenderSettings(lowRenderScale, lowShadowDistance);
-            ApplyBloom(lowBloomEnabled, lowBloomIntensity);
+            ApplyBloom(lowBloomEnabled, lowBloomIntensity,
+                lowBloomThreshold, lowBloomScatter, lowBloomHighQualityFiltering);
+            
             SetParticlesEnabled(lowParticlesEnabled);
             SetShadowLightsEnabled(false);
             SetOptionalLightsEnabled(lowOptionalLightsEnabled);
+            SetRendererFeatureActive(ssaoFeatureName, lowSsaoEnabled);
             
             Debug.Log("[QualityMode] Low Quality Applied");
         }
@@ -86,10 +111,13 @@ namespace Work.Code.Managers
             IsLowQuality = true;
             
             ApplyRenderSettings(emergencyRenderScale, emergencyShadowDistance);
-            ApplyBloom(emergencyBloomEnabled, emergencyBloomIntensity);
+            ApplyBloom(emergencyBloomEnabled, emergencyBloomIntensity, 
+                emergencyBloomThreshold, emergencyBloomScatter, emergencyBloomHighQualityFiltering);
+            
             SetParticlesEnabled(emergencyParticlesEnabled);
             SetShadowLightsEnabled(false);
             SetOptionalLightsEnabled(emergencyOptionalLightsEnabled);
+            SetRendererFeatureActive(ssaoFeatureName, emergencySsaoEnabled);
             
             Debug.Log("[QualityMode] Emergency Quality Applied");
         }
@@ -106,7 +134,8 @@ namespace Work.Code.Managers
             _urpAsset.shadowDistance = shadowDistance;
         }
         
-        private void ApplyBloom(bool enabled, float intensity)
+        private void ApplyBloom(bool enabled, float intensity,
+            float threshold, float scatter, bool highQualityFiltering)
         {
             if (_bloom == null)
             {
@@ -116,6 +145,9 @@ namespace Work.Code.Managers
             
             _bloom.active = enabled;
             _bloom.intensity.Override(intensity);
+            _bloom.threshold.Override(threshold);
+            _bloom.scatter.Override(scatter);
+            _bloom.highQualityFiltering.Override(highQualityFiltering);
         }
         
         private void SetParticlesEnabled(bool enabled)
@@ -165,6 +197,31 @@ namespace Work.Code.Managers
                 
                 light.enabled = enabled;
             }
+        }
+        
+        private void SetRendererFeatureActive(string featureName, bool enabled)
+        {
+            if (rendererData == null)
+            {
+                Debug.LogWarning("[QualityMode] Renderer Data가 연결되지 않았습니다.");
+                return;
+            }
+            
+            foreach (ScriptableRendererFeature feature in rendererData.rendererFeatures)
+            {
+                if (feature == null)
+                {
+                    continue;
+                }
+                
+                if (feature.name.Contains(featureName))
+                {
+                    feature.SetActive(enabled);
+                    return;
+                }
+            }
+            
+            Debug.LogWarning($"[QualityMode] Renderer Feature를 찾을 수 없습니다: {featureName}");
         }
         
     }

@@ -1,0 +1,55 @@
+﻿Performance_Report
+
+환경
+
+| 항목              | 내용 |
+| Unity Version    | Unity 6 |
+| Render Pipeline  | URP |
+| Scene            | MainStage |
+| Resolution       | 1920x1080 |
+| Test Mode        | Editor Play Mode |
+| Target FPS       | 60 FPS |
+
+최적화 전 측정
+
+| 상태                  | FPS   | CPU main | Render thread | Batches | SetPass | Tris | Verts | Shadow Casters |
+| 기본                  | 98.3  | 10.2ms   | 5.1ms         | 108     | 43      |14.7k | 16.3k | 46 |
+| 라이트 무겁게           | 119.8 | 8.3ms    | 4.6ms         | 123     | 44      |20.4k | 20.2k | 62 |
+| 라이트 +VFX           | 116.4  | 8.6ms    | 5.0ms         | 121     | 46      |21.6k | 22.8k | 62 |
+| 라이트 + VFX + Bloom  | 63.1   | 15.8ms   | 5.2ms         | 123     | 44      |20.4k | 20.2k | 62 |
+
+
+Frame Debugger 확인 결과 Bloom은 Prefilter, Downsample, Upsample 단계를 거치며 여러 번 실행됨
+
+| 항목                    | 확인 내용 |
+| Bloom                  | 약 16개 이벤트 발생 |
+| SSAO                   | 별도 렌더링 패스 발생 |
+| Main Light Shadowmap   | 그림자 렌더링 발생 |
+| UI                     | 운영자 패널이 Screen Space UI로 후반에 렌더링됨 |
+| SRP Batcher            | SRP Batch가 표시되어 정상 동작 확인 |
+
+적용한 최적화
+
+| 문제                     | 원인                                            | 적용한 조치 |
+| Bloom 사용 시 FPS 하락    | 화면 전체 후처리 비용                              | Bloom 강도 감소, High Quality Filtering Off |
+| RenderTexture 사용량 증가 | Bloom, SSAO, Post Processing, Render Scale 영향 | Low/Emergency에서 Render Scale 감소 |
+| Shadow 비용              | Main Light Shadowmap, Shadow Caster 증가        | Low/Emergency에서 Shadow Off |
+| VFX 비용 가능성           | Particle 수 증가 가능                             | Low/Emergency에서 VFX 정지 |
+| 운영 중 긴급 대응 필요      | 실시간 공연 중 수동 조정 어려움                       | Low Quality Mode / Emergency Fallback 구현 |
+
+메모리 비교
+
+| 상태          | Total Allocated | Resident | Graphics | RenderTexture | Texture2D |
+| 이전 기준      | 5.90GB | 2.08GB | 0.59GB | 434.5MB | 136.8MB |
+| Normal       | 6.79GB | 2.52GB | 0.60GB | 438.8MB | 146.3MB |
+| Low Quality  | 7.01GB | 3.34GB | 480.0MB | 304.1MB | 148.7MB |
+| Emergency    | 7.05GB | 3.38GB | 471.5MB | 295.6MB | 148.8MB |
+
+결과
+
+| 항목                | 결과 |
+| 주요 병목            | Bloom / Post Processing |
+| 가장 효과 있었던 조치  | Render Scale 감소, Bloom 약화, SSAO/Shadow Off |
+| RenderTexture 감소  | Normal 438.8MB → Low 304.1MB |
+| Emergency 대응      | Bloom Off, Shadow Off, VFX Stop, Emergency Light, Fallback 적용 |
+
