@@ -35,6 +35,7 @@ namespace Work.Code.UI
         private string _showStatus = "Ready";
         private string _oscReceiveStatus = "Stopped";
         private string _oscSignalStatus = "Idle";
+        private Coroutine _warningTextCoroutine;
 
         private void Awake()
         {
@@ -112,6 +113,12 @@ namespace Work.Code.UI
             {
                 obsWebSocketClient.OnStatusChanged -= UpdateObsStatusText;
                 obsWebSocketClient.OnLastMessageChanged -= UpdateObsLastMessageText;
+            }
+            
+            if (_warningTextCoroutine != null)
+            {
+                StopCoroutine(_warningTextCoroutine);
+                _warningTextCoroutine = null;
             }
         }
         
@@ -309,19 +316,31 @@ namespace Work.Code.UI
 
         private void UpdateWarningText(string log)
         {
-            StartCoroutine(UpdateWarningTextCoroutine(log));
-        }
-
-        private IEnumerator UpdateWarningTextCoroutine(string log)
-        {
-            if (warningText != null)
+            if (warningText == null)
             {
-                warningText.text = log;
+                return;
             }
 
+            warningText.text = log;
+
+            if (_warningTextCoroutine != null)
+            {
+                StopCoroutine(_warningTextCoroutine);
+            }
+
+            _warningTextCoroutine = StartCoroutine(UpdateWarningTextCoroutine());
+        }
+
+        private IEnumerator UpdateWarningTextCoroutine()
+        {
             yield return new WaitForSeconds(1f);
-            
-            warningText.text = string.Empty;
+
+            if (warningText != null)
+            {
+                warningText.text = string.Empty;
+            }
+
+            _warningTextCoroutine = null;
         }
         
         private void UpdateObsStatusText(string status)
